@@ -4,9 +4,9 @@
 # assumes MTP device is mounted via GVFS by the current user (standard in Ubuntu)
 # also copies album art if present
 
-ffmpeg_args='-vn -b:a 64k -ac 2' # no video, 64 kbps, force stereo
+ffmpeg_args='-vn -b:a 64k -ac 2 -n -nostdin' # no video, 64 kbps, force stereo, do not overwrite nor ask about it, non-interactive
 devicepath=/run/user/$UID/gvfs/mtp*
-outpath='Internal storage/Music'
+outpath='Internal shared storage/Music'
 filetypes=(mp3 flac m4a mp4)
 artfiles=(Folder.jpg AlbumArt*.jpg)
 
@@ -46,7 +46,7 @@ do
 			for sourcefile in "$dir"/*.$filetype
 			do
 				newfile=$(basename "$sourcefile" | sed "s/\.$filetype$/.opus/")
-				ffmpeg -i "$sourcefile" "$ffmpeg_args" "$devicepath/$outpath/$dirname/$newfile"
+				ffmpeg -i \'"$sourcefile"\' "$ffmpeg_args" \'"$devicepath/$outpath/$dirname/$newfile"\'
 			done
 		fi
 	done
