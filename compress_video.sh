@@ -1,11 +1,11 @@
 #! /bin/bash
 
 # given a list of video files, convert each one to a probably smaller format (H.265 + Opus in MKV)
-# issue: if the video contains multiple audio tracks (or video for some reason?), you'll get all of them - this is probably not desired since we're downmixing to stereo anyway
+# per ffmpeg behavior it chooses only the video stream with the highest resolution, the audio stream with the most channels (but downmixed to stereo), and the first subtitle stream
 
 video_options='-vcodec libx265 -crf 23'
 audio_options='-acodec libopus -b:a 64k -ac 2' # '-ac 2' reduces to stereo, if not already
-other_options='-scodec copy -map 0' # 'map 0' requires all input streams to be mapped in output (so e.g. you don't lose some subtitle tracks)
+other_options='-scodec copy' #
 file_extension='.recompress.mkv' # determines container
 
 if [ ! -n "$1" ]
