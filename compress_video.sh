@@ -6,7 +6,7 @@
 video_options='-vcodec libx265 -crf 23'
 audio_options='-acodec libopus -b:a 64k -ac 2' # '-ac 2' reduces to stereo, if not already
 other_options='-scodec copy -map 0' # 'map 0' requires all input streams to be mapped in output (so e.g. you don't lose some subtitle tracks)
-file_extension='.mkv' # determines container
+file_extension='.recompress.mkv' # determines container
 
 if [ ! -n "$1" ]
 then
