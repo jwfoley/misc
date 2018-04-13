@@ -2,5 +2,6 @@
 alias dns_fix='sudo cp ~/resolv.conf /etc/resolv.conf'
 # see who's been visiting your apache server
 alias stalk_apache='for i in $(sudo cut -f 1 -d " " /var/log/apache2/access.log | sort | uniq); do curl -s freegeoip.net/csv/$i; done | tr "," "\t"'
-
+# correctly line up tab-delimited columns in the terminal
+alias pretty='column -ents $'\''\t'\'''
 
