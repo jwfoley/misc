@@ -6,7 +6,7 @@
 
 gimp_command=gimp
 gimp_procedure='(plug-in-autostretch-hsv RUN-NONINTERACTIVE image drawable)'
-recompress_command="jpeg-recompress -q veryhigh -a -m mpe"
+recompress_command='jpeg-recompress -q veryhigh -a -m mpe'
 tmp_suffix='.tmp.jpg'
 final_suffix='.stretchhsv.recompress.jpg'
 n_workers=$(nproc)
