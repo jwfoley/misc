@@ -1,13 +1,14 @@
 #! /bin/bash
 
 # given a list of images in any GIMP-recognized format, automatically process all of them in GIMP and then generate recompressed JPEGs with jpeg-recompress (from jpeg-archive)
+# output goes in the working directory
 # efficiently parallelized to create multiple GIMP workers
 # current GIMP procedure is to run the Auto Stretch HSV plugin but other things are possible
 
 gimp_command=gimp
 gimp_procedure='(plug-in-autostretch-hsv RUN-NONINTERACTIVE image drawable)'
 recompress_command='jpeg-recompress -q veryhigh -a -m mpe'
-tmp_suffix='.tmp.jpg'
+tmp_suffix='.jpg'
 final_suffix='.stretchhsv.recompress.jpg'
 n_workers=$(nproc)
 
