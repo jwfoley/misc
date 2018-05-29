@@ -1,15 +1,13 @@
 #! /bin/bash
 
-# given a list of images in any GIMP-recognized format, automatically process all of them in GIMP and then generate recompressed JPEGs with jpeg-recompress (from jpeg-archive)
+# given a list of images in any GIMP-recognized format, automatically process all of them in GIMP 
 # output goes in the working directory
 # efficiently parallelized to create multiple GIMP workers
 # current GIMP procedure is to run the Auto Stretch HSV plugin but other things are possible
 
 gimp_command=gimp
 gimp_procedure='(plug-in-autostretch-hsv RUN-NONINTERACTIVE image drawable)'
-recompress_command='jpeg-recompress -q veryhigh -a -m mpe'
-tmp_suffix='.jpg'
-final_suffix='.stretchhsv.recompress.jpg'
+new_suffix='.stretchhsv.jpg' # determines output file format
 n_workers=$(nproc)
 
 if [ ! -n "$1" ]
@@ -18,16 +16,14 @@ then
 	exit 1
 fi
 
-
-tmp_dir=$(mktemp -d --suffix .stretch_compress)
 infiles=()
-tempfiles=()
+outfiles=()
 counter=0
 for filename in "$@"
 do
 	i=$(($counter % $n_workers))
 	infiles[$i]="${infiles[$i]} \"$filename\""
-	tempfiles[$i]="${tempfiles[$i]} \"$tmp_dir/"$(basename $filename | sed -E "s/\..+?/$tmp_suffix/")"\""
+	outfiles[$i]="${outfiles[$i]} \""$(basename $filename | sed -E "s/\..+?/$new_suffix/")"\""
 	counter=$(($counter + 1))
 done
 
@@ -38,7 +34,7 @@ do
 	echo "(
 		let* (
 			(infiles (list ${infiles[$worker]}))
-			(outfiles (list ${tempfiles[$worker]}))
+			(outfiles (list ${outfiles[$worker]}))
 		)
 		(while (not (null? infiles))
 			(
@@ -60,8 +56,4 @@ do
 done
 
 wait $(jobs -p)
-
-parallel "$recompress_command {} {/.}$final_suffix" ::: $tmp_dir/*$tmp_suffix
-
-rm -rf $tmp_dir
 
