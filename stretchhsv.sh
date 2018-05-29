@@ -22,9 +22,9 @@ counter=0
 for filename in "$@"
 do
 	i=$(($counter % $n_workers))
-	infiles[$i]="${infiles[$i]} \"$filename\""
-	outfiles[$i]="${outfiles[$i]} \""$(basename $filename | sed -E "s/\..+?/$new_suffix/")"\""
-	counter=$(($counter + 1))
+	infiles[$i]+=" \"$filename\""
+	outfiles[$i]+=" \""$(basename $filename | sed -E "s/\..+?/$new_suffix/")"\""
+	((counter++))
 done
 
 set -euo pipefail

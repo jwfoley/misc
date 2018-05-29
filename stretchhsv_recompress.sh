@@ -19,14 +19,14 @@ set -euo pipefail
 
 tmp_dir=$(mktemp -d --suffix .stretchhsv_recompress)
 out_dir=$(pwd)
-infiles=
+infiles=()
 for filename in "$@"
 do
-	infiles="$infiles $(readlink -f $filename)"
+	infiles+=("$(readlink -f $filename)")
 done
 
 cd $tmp_dir
-$gimp_command $infiles
+$gimp_command ${infiles[@]}
 cd $out_dir
 $recompress_command $tmp_dir/*
 
