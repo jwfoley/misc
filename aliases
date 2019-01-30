@@ -5,4 +5,4 @@ alias stalk_apache='for i in $(sudo cut -f 1 -d " " /var/log/apache2/access.log 
 # correctly line up tab-delimited columns in the terminal
 alias pretty='column -ents $'\''\t'\'''
 # always parallelize make
-alias make='make -j$(nproc)'
+alias make='make -j'
